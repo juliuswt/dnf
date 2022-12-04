@@ -128,7 +128,7 @@ class SearchCommand(commands.Command):
             if print_section_header:
                 _print_section_header(exact_match, used_attrs, matched_needles)
                 print_section_header = False
-            self.base.output.matchcallback(pkg, counter.matched_haystacks(pkg), args)
+            self.base.output.matchcallback(pkg, counter.matched_haystacks(pkg), args, is_installed=pkg.is_installed)
 
         if len(counter) == 0:
             logger.info(_('No matches found.'))

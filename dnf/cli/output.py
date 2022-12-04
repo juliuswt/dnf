@@ -793,7 +793,7 @@ class Output(object):
             self._display_packages(packages)
 
     def matchcallback(self, po, values, matchfor=None, verbose=None,
-                      highlight=None):
+                      highlight=None, is_installed=False):
         """Output search/provides type callback matches.
 
         :param po: the package object that matched the search
@@ -829,15 +829,22 @@ class Output(object):
                     file_match = True
             return file_match
 
+        isinstalled = ''
+        if is_installed:
+            isinstalled = '[installed] '
+            #TODO Setup new conf.color_search_installed in libdnf.
+            isinstalled = self._sub_highlight(isinstalled, self.conf.color_list_available_install, '[installed]')
+
         if self.conf.showdupesfromrepos:
             msg = '%s : ' % po
         else:
             msg = '%s.%s : ' % (po.name, po.arch)
+
         msg = self.fmtKeyValFill(msg, po.summary or "")
         if matchfor:
             if highlight is None:
                 highlight = self.conf.color_search_match
-            msg = self._sub_highlight(msg, highlight, matchfor, ignore_case=True)
+            msg = isinstalled + self._sub_highlight(msg, highlight, matchfor, ignore_case=True)
         print(msg)
 
         if verbose is None:

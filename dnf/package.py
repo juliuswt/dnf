@@ -94,6 +94,10 @@ class Package(hawkey.Package):
         return self.reponame
 
     @property
+    def is_installed(self):
+        return self._from_system
+
+    @property
     def from_repo(self):
         # :api
         if self._from_system:
